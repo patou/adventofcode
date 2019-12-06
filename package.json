@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "101 Firebase workshop for web apps.",
   "scripts": {
+    "day2": "node day2.js",
     "day3": "node day3.js",
     "day3-2": "node day3-2.js",
     "day4": "time node day4.js",
