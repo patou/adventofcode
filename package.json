@@ -8,6 +8,8 @@
     "day3-2": "node day3-2.js",
     "day4": "time node day4.js",
     "day4-2": "time node day4-2.js",
+    "day5": "time node day5.js",
+    "day5-2": "time node day5-2.js",
     "day6": "time node day6.js",
     "day6-2": "time node day6-2.js"
   },
