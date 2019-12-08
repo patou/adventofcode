@@ -11,7 +11,8 @@
     "day5": "time node day5.js",
     "day5-2": "time node day5-2.js",
     "day6": "time node day6.js",
-    "day6-2": "time node day6-2.js"
+    "day6-2": "time node day6-2.js",
+    "day7": "time node day7.js"
   },
   "license": "MIT"
 }
