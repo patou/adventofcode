@@ -12,18 +12,18 @@ function getParameters(tab, pos, param, parameters, base) {
   let mode = parameters % 10
   let address = tab[pos + param]
   if (mode == 1) return address
-  if (mode == 2) address = base + parseInt(address)
-  if (tab.length < address) {
+  if (mode == 2) address = base + address
+  if (address >= tab.length) {
     return 0;
   }
   else
-    return tab[parseInt(address)]
+    return tab[address]
 }
 
 function getAddress(tab, pos, param, parameters, base) {
   for (let p = param; p > 1; p--) parameters = Math.trunc(parameters / 10)
   let mode = parameters % 10
-  let address = parseInt(tab[pos + param])
+  let address = tab[pos + param]
   if (mode == 2) return base + address
   return address
 }
@@ -36,18 +36,18 @@ function calc(tab, inputs) {
   let output;
   let input = 0;
   while(true) {
-    let opcode = parseInt(tab[pos]) % 100
-    let parameters = Math.trunc(parseInt(tab[pos]) / 100)
+    let opcode = tab[pos] % 100
+    let parameters = Math.trunc(tab[pos] / 100)
     //console.error(`opcode ${opcode} with ${parameters}`)
     switch (opcode) {
       case 99:
       return
       case 1:
-        tab[getAddress(tab, pos, 3, parameters, base)] = (BigInt(getParameters(tab, pos, 1, parameters, base)) + BigInt(getParameters(tab, pos, 2, parameters, base))).toString()
+        tab[getAddress(tab, pos, 3, parameters, base)] = getParameters(tab, pos, 1, parameters, base) + getParameters(tab, pos, 2, parameters, base)
         pos += 4
         break;
       case 2:
-        tab[getAddress(tab, pos, 3, parameters, base)] = (BigInt(getParameters(tab, pos, 1, parameters, base)) * BigInt(getParameters(tab, pos, 2, parameters, base))).toString()
+        tab[getAddress(tab, pos, 3, parameters, base)] = getParameters(tab, pos, 1, parameters, base) * getParameters(tab, pos, 2, parameters, base)
         pos += 4
         break;
       case 3:
@@ -64,28 +64,28 @@ function calc(tab, inputs) {
         break;
       case 5:
         //console.error(`pos = (${getParameters(tab, pos, 1, parameters)} != 0) ? ${getParameters(tab, pos, 1, parameters)} : pos + 2`)
-        if (getParameters(tab, pos, 1, parameters) != '0')
-          pos = parseInt(getParameters(tab, pos, 2, parameters, base))
+        if (getParameters(tab, pos, 1, parameters) != 0)
+          pos = getParameters(tab, pos, 2, parameters, base)
         else
           pos += 3
         break;
       case 6:
         //console.error(`pos = (${getParameters(tab, pos, 1, parameters)} == 0) ? ${getParameters(tab, pos, 1, parameters)} : pos + 2`)
-        if (getParameters(tab, pos, 1, parameters) == '0')
-          pos = parseInt(getParameters(tab, pos, 2, parameters, base))
+        if (getParameters(tab, pos, 1, parameters) == 0)
+          pos = getParameters(tab, pos, 2, parameters, base)
         else
           pos += 3
         break;
       case 7:
-        tab[getAddress(tab, pos, 3, parameters, base)] = (BigInt(getParameters(tab, pos, 1, parameters, base)) < BigInt(getParameters(tab, pos, 2, parameters, base))) ? 1 : 0
+        tab[getAddress(tab, pos, 3, parameters, base)] = getParameters(tab, pos, 1, parameters, base) < getParameters(tab, pos, 2, parameters, base) ? 1 : 0
         pos += 4
         break;
       case 8:
-        tab[getAddress(tab, pos, 3, parameters, base)] = (BigInt(getParameters(tab, pos, 1, parameters, base)) == BigInt(getParameters(tab, pos, 2, parameters, base))) ? 1 : 0
+        tab[getAddress(tab, pos, 3, parameters, base)] = getParameters(tab, pos, 1, parameters, base) == getParameters(tab, pos, 2, parameters, base) ? 1 : 0
         pos += 4
         break;
       case 9:
-        base += parseInt(getParameters(tab, pos, 1, parameters, base));
+        base += getParameters(tab, pos, 1, parameters, base);
         pos += 2
         break;
       default:
@@ -97,7 +97,7 @@ function calc(tab, inputs) {
 
 const version = process.argv[2] || 0
 //if (version < test.length) {
-  let tab = test[version].split(',')
-  output = calc(tab, ['1'])
+  let tab = test[version].split(',').map(n => parseInt(n))
+  output = calc(tab, [1])
   console.log(output)
 //}
