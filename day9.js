@@ -9,20 +9,20 @@ let test= [
 function getParameters(tab, pos, param, parameters, base) {
   for (let p = param; p > 1; p--) parameters = Math.trunc(parameters / 10)
   let mode = parameters % 10
-  let address = parseInt(tab[pos + param])
-  if (mode == 1) return tab[pos + param] || '0';
+  let address = tab[pos + param]
+  if (mode == 1) return tab[pos + param] || 0;
   if (mode == 2) address = base + address;
   if (tab.length < address) {
-    return '0';
+    return 0;
   }
   else
-    return tab[address] || '0'
+    return tab[address] || 0
 }
 
 function getAddress(tab, pos, param, parameters, base) {
   for (let p = param; p > 1; p--) parameters = Math.trunc(parameters / 10)
   let mode = parameters % 10
-  let address = parseInt(tab[pos + param])
+  let address = tab[pos + param]
   if (mode == 2) return base + address
   return address
 }
@@ -32,75 +32,75 @@ function log(message) {
 
 function calc(tab, inputs) {
   log(tab)
-  //log(inputs)
+  log(inputs)
+
   let pos = 0;
   let base = 0;
   let output;
-  let input = 0;
   while(true) {
-    let opcode = parseInt(tab[pos]) % 100
-    let parameters = Math.trunc(parseInt(tab[pos]) / 100)
-    log(`${pos}:${base} - ${tab[pos]} - opcode ${opcode} with ${parameters} : ${getParameters(tab, pos, 1, parameters, base) || 0} ${getParameters(tab, pos, 2, parameters, base) || 0} ${getAddress(tab, pos, 3, parameters, base) || 0} / ${tab[pos + 1] || 0},${tab[pos + 2] || 0},${tab[pos + 3] || 0}`)
+    let opcode = tab[pos] % 100
+    let parameters = Math.trunc(tab[pos] / 100)
+
+    let first = getParameters(tab, pos, 1, parameters, base)
+    let second = getParameters(tab, pos, 2, parameters, base)
+    let address = getAddress(tab, pos, 3, parameters, base)
+    log(`${pos}:${base} - ${tab[pos]} - opcode ${opcode} with ${parameters} : ${first || 0} ${second || 0} ${address || 0} / ${tab[pos + 1] || 0},${tab[pos + 2] || 0},${tab[pos + 3] || 0}`)
     switch (opcode) {
       case 99:
       return output
       case 1:
-        log(`ADD: tab[${getAddress(tab, pos, 3, parameters, base)}] = ${getParameters(tab, pos, 1, parameters, base)} + ${getParameters(tab, pos, 2, parameters, base)}`)
-        tab[getAddress(tab, pos, 3, parameters, base)] = (BigInt(getParameters(tab, pos, 1, parameters, base)) + BigInt(getParameters(tab, pos, 2, parameters, base))).toString()
-        log(`=${tab[getAddress(tab, pos, 3, parameters, base)]}`)
+        log(`ADD: tab[${address}] = ${first} + ${second}`)
+        tab[address] = first + second
+        log(`=${tab[address]}`)
         pos += 4
         break;
       case 2:
-        log(`MUL: tab[${getAddress(tab, pos, 3, parameters, base)}] = ${getParameters(tab, pos, 1, parameters, base)} * ${getParameters(tab, pos, 2, parameters, base)}`)
-        tab[getAddress(tab, pos, 3, parameters, base)] = (BigInt(getParameters(tab, pos, 1, parameters, base)) * BigInt(getParameters(tab, pos, 2, parameters, base))).toString()
-        log(`=${tab[getAddress(tab, pos, 3, parameters, base)]}`)
+        log(`MUL: tab[${address}] = ${first} * ${second}`)
+        tab[address] = first * second
+        log(`=${tab[address]}`)
         pos += 4
         break;
       case 3:
         log(`INP: tab[${getAddress(tab, pos, 1, parameters, base)}] = 1`)
         tab[getAddress(tab, pos, 1, parameters, base)] = inputs.shift()
-        log(`=${tab[getAddress(tab, pos, 3, parameters, base)]}`)
+        log(`=${tab[address]}`)
         pos += 2
         break;
       case 4:
-        //log(tab)
-        log(`OUT: ${getParameters(tab, pos, 1, parameters, base)}`)
-        output = getParameters(tab, pos, 1, parameters, base)
-        //inputs.push(output)
-        log(output)
+        log(`OUT: ${first}`)
+        output = first
+        console.log(output)
         pos += 2
         break;
       case 5:
-        //log(`pos = (${getParameters(tab, pos, 1, parameters)} != 0) ? ${getParameters(tab, pos, 1, parameters)} : pos + 2`)
-        log(`NZE: if (${parseInt(getParameters(tab, pos, 1, parameters, base))} !== 0) pos = ${getParameters(tab, pos, 2, parameters, base)}`)
-        if (parseInt(getParameters(tab, pos, 1, parameters, base)) !== 0)
-          pos = parseInt(getParameters(tab, pos, 2, parameters, base))
+        log(`NZE: if (${first} !== 0) pos = ${second}`)
+        if (first !== 0)
+          pos = second
         else
           pos += 3
         break;
       case 6:
-        //log(`pos = (${getParameters(tab, pos, 1, parameters)} == 0) ? ${getParameters(tab, pos, 1, parameters)} : pos + 2`)
-        log(`IZE: if (${getParameters(tab, pos, 1, parameters, base)} === 0) pos = ${getParameters(tab, pos, 2, parameters, base)}`)
-        if (parseInt(getParameters(tab, pos, 1, parameters, base)) === 0)
-          pos = parseInt(getParameters(tab, pos, 2, parameters, base))
+        log(`IZE: if (${first} === 0) pos = ${second}`)
+        if (first === 0)
+          pos = second
         else
           pos += 3
         break;
       case 7:
-        log(`ILT: tab[${getAddress(tab, pos, 3, parameters, base)}] = (${getParameters(tab, pos, 1, parameters, base)} < ${getParameters(tab, pos, 2, parameters, base)}) ? 1 : 0`)
-        tab[getAddress(tab, pos, 3, parameters, base)] = (BigInt(getParameters(tab, pos, 1, parameters, base)) < BigInt(getParameters(tab, pos, 2, parameters, base))) ? 1 : 0
-        log(`=${tab[getAddress(tab, pos, 3, parameters, base)]}`)
+        log(`ILT: tab[${address}] = (${first} < ${second}) ? 1 : 0`)
+        tab[address] = first < second ? 1 : 0
+        log(`=${tab[address]}`)
         pos += 4
         break;
       case 8:
-        log(`IEQ: tab[${getAddress(tab, pos, 3, parameters, base)}] = (${getParameters(tab, pos, 1, parameters, base)} == ${getParameters(tab, pos, 2, parameters, base)}) ? 1 : 0`)
-        tab[getAddress(tab, pos, 3, parameters, base)] = (BigInt(getParameters(tab, pos, 1, parameters, base)) === BigInt(getParameters(tab, pos, 2, parameters, base))) ? 1 : 0
-        log(`=${tab[getAddress(tab, pos, 3, parameters, base)]}`)
+        log(`IEQ: tab[${address}] = (${first} == ${second}) ? 1 : 0`)
+        tab[address] = first === second ? 1 : 0
+        log(`=${tab[address]}`)
         pos += 4
         break;
       case 9:
-        log(`BIN: base = ${base} + ${getParameters(tab, pos, 1, parameters, base)}`)
-        base += parseInt(getParameters(tab, pos, 1, parameters, base));
+        log(`BIN: base = ${base} + ${first}`)
+        base += first;
         pos += 2
         break;
       default:
@@ -111,9 +111,9 @@ function calc(tab, inputs) {
 }
 
 const version = process.argv[2] || 0
-const input = process.argv[3] || '1'
+const input = parseInt(process.argv[3]) || 1
 //if (version < test.length) {
-  let tab = test[version].split(',')
+  let tab = test[version].split(',').map(n => parseInt(n))
   output = calc(tab, [input])
   log(tab)
   console.log(output)
