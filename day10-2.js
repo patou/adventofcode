@@ -1,40 +1,10 @@
 let test = [
-`.#..#
-.....
-#####
-....#
-...##`,
-`......#.#.
-#..#.#....
-..#######.
-.#.#.###..
-.#..#.....
-..#....#.#
-#..#....#.
-.##.#..###
-##...#..#.
-.#....####`,
-`#.#...#.#.
-.###....#.
-.#....#...
-##.#.#.#.#
-....#.#.#.
-.##..###.#
-..#...##..
-..##....##
-......#...
-.####.###.`,
-`.#..#..###
-####.###.#
-....###.#.
-..###.##.#
-##.##.#.#.
-....###..#
-..#.#..#.#
-#..#.#.###
-.##...##.#
-.....#.#..`,
-`.#..##.###...#######
+[`.#....#####...#..
+##...##.#####..##
+##...#...#.#####.
+..#.....X...###..
+..#.#.....#....##`, {x : 8, y: 3}],
+[`.#..##.###...#######
 ##.############..##.
 .#.######.########.#
 .###.#######.####.#.
@@ -53,8 +23,8 @@ let test = [
 ....##.##.###..#####
 .#.#.###########.###
 #.#.#.#####.####.###
-###.##.####.##.#..##`,
-`.............#..#.#......##........#..#
+###.##.####.##.#..##`, {x : 11, y: 13}],
+[`.............#..#.#......##........#..#
 .#...##....#........##.#......#......#.
 ..#.#.#...#...#...##.#...#.............
 .....##.................#.....##..#.#.#
@@ -92,7 +62,7 @@ let test = [
 ##............#....#.#.....#...........
 ........###.............##...#........#
 #.........#.....#..##.#.#.#..#....#....
-..............##.#.#.#...........#.....`
+..............##.#.#.#...........#.....`,{ x: 26, y: 29 }]
 ]
 
 let version = process.argv[2] || 0
@@ -101,37 +71,64 @@ function createTab(input) {
   return input.split('\n').map(line => line.split(''))
 }
 
-function createListAsteroid(map) {
+function createListAsteroid(map, start) {
   let list = []
-  for (let x = 0; x < map.length; x++)
-    for (let y = 0; y < map[x].length; y++)
-      if (map[x][y] === '#')
+  for (let y = 0; y < map.length; y++)
+    for (let x = 0; x < map[y].length; x++)
+      if (map[y][x] === '#' && !(start.x == x && start.y == y))
         list.push({x, y})
   return list;
 }
 
-let map = createTab(test[version])
-let list = createListAsteroid(map)
+let map = createTab(test[version][0])
+let m1 = test[version][1]
+let list = createListAsteroid(map, m1)
 //console.log(map)
 //console.log(list)
-let max = 0;
-for (let m1 of list) {
-  let set = new Set();
-  for (let m2 of list) {
-    if (m1 === m2) continue;
-    let angle = (Math.atan2(m2.x - m1.x, m1.y - m2.y) * 180) / Math.PI;
-    if (angle < 0) {
-        angle = angle + 360;
-    }
-    if (angle > 360) {
-        angle = angle - 360;
-    }
-    angle = Math.round(angle * 10000);
-    set.add(angle)
+
+m1.angle = 0;
+m1.distance = 0;
+console.log(map[m1.y][m1.x])
+map[m1.y][m1.x] = 'X'
+for (let m2 of list) {
+  if (m1 === m2) continue;
+  let angle = (Math.atan2(m2.x - m1.x, m1.y - m2.y) * 180) / Math.PI;
+  if (angle < 0) {
+      angle = angle + 360;
   }
-  max = Math.max(max, set.size)
-  if (set.size === 299) {
-    console.log(m1)
+  if (angle > 360) {
+      angle = angle - 360;
   }
+  angle = Math.round(angle * 1000);
+  let distance = Math.sqrt(Math.pow(Math.abs(m1.y - m2.y), 2) + Math.pow(Math.abs(m1.x - m2.x), 2))
+  m2.angle = angle
+  m2.distance = distance
 }
-console.log(max)
+let angles = new Map();
+list.sort((a1, a2) => a1.distance - a2.distance)
+list.forEach(a => {
+  let cycle = angles.get(a.angle) || 0
+  cycle++
+  a.cycle = cycle;
+  angles.set(a.angle, cycle)
+})
+//console.log(angles);
+list.sort((a, b) => (a.cycle - b.cycle) || (a.angle - b.angle))
+console.log(list)
+
+
+async function display() {
+  let step = 1;
+  for (let a of list) {
+    map[a.y][a.x] = '*'
+    process.stdout.write('\033c')
+    console.log(step++);
+    console.log(map.map(tab => tab.join('') ).join('\n'))
+    await new Promise(resolve => setTimeout(resolve, 100));
+    if (step === 201) break;
+  }
+  //list.forEach((value, index) => console.log(`${index+1} at ${value.x},${value.y} ${value.angle} ${value.distance}`))
+  console.log(list[199].x * 100 + list[199].y)
+}
+
+display()
