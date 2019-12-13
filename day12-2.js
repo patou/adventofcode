@@ -44,47 +44,50 @@ function printMoon(step) {
   console.log('')
 }
 
-function calchash(moons) {
-  return moons.map(moon => pad(moon.x) + pad(moon.y) + pad(moon.z) + pad(moon.vx) + pad(moon.vy) + pad(moon.vz)).reduce((a, b) => a+b)
+function calchash(moons, axis) {
+  return moons.map(moon => pad(moon[axis]) + pad(moon['v'+axis])).reduce((a, b) => a+b)
 }
 
 let input = test[process.argv[2] || 0]
 let set = new Set()
 
 printMoon(0)
-let step = 0;
-//for (let step = 1; step <= input.steps; step++) {
-while(true) {
-  for (let moon of input.moons) {
-    for (let attrMoon of input.moons) {
-      if (moon === attrMoon) continue
-      moon.vx += gravity(moon.x, attrMoon.x)
-      moon.vy += gravity(moon.y, attrMoon.y)
-      moon.vz += gravity(moon.z, attrMoon.z)
+let data = {x:0, y:0, z:0};
+
+for (let axis of ['x', 'y', 'z']){
+  let initial = calchash(input.moons, axis)
+  for (let step = 1; true; step++) {
+    for (let moon of input.moons) {
+      for (let attrMoon of input.moons) {
+        if (moon === attrMoon) continue
+        moon['v'+axis] += gravity(moon[axis], attrMoon[axis])
+      }
+    }
+    for (let moon of input.moons) {
+      moon[axis] += moon['v'+axis]
+    }
+    if (calchash(input.moons, axis) === initial) {
+      data[axis] = step;
+      break;
     }
   }
-  let allZero = 0
-  for (let moon of input.moons) {
-    moon.x += moon.vx;
-    moon.y += moon.vy;
-    moon.z += moon.vz;
-    if (moon.vx === 0 && moon.vy === 0 && moon.vz === 0) {
-      allZero++;
-    }
-  }
-  if (allZero === 4) {
-    printMoon(step)
-    break;
-  }
-  step++;
 }
 
-console.log(`Energy after ${input.steps} steps:`)
-let total = 0;
-for (let moon of input.moons) {
-  let pot = Math.abs(moon.x) + Math.abs(moon.y) + Math.abs(moon.z)
-  let kin = Math.abs(moon.vx) + Math.abs(moon.vy) + Math.abs(moon.vz)
-  total += pot * kin;
-  console.log(`pot: ${pad(moon.x)} + ${pad(moon.y)} + ${pad(moon.z)} = ${pad(pot)}; kin: ${pad(moon.vx)} + ${pad(moon.vy)} + ${pad(moon.vz)} = ${pad(kin)}; total: ${pad(pot)} + ${pad(kin)} = ${pad(pot * kin)}`)
+function pgcd(a, b) {
+  while (b != 0) {
+    let c = b;
+    b = a % b;
+    a = c;
+  }
+  return a;
 }
+
+function ppcm(a, b) {
+  if (a === 0 || b === 0) return 0;
+  else return (a * b) / pgcd(a, b)
+}
+
+console.log(data)
+let total = ppcm(ppcm(data.x, data.y), data.z)
+
 console.log(total);
