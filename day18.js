@@ -128,7 +128,7 @@ function findNodes(map) {
 }
 
 function findLinks(node, x, y, size, links) {
-  if (y < 0 || y > map.length || x < 0 || x > map[y].length) return;
+  if (y < 0 || y >= map.length || x < 0 || x >= map[y].length) return;
   let current = map[y][x]
   if (current === '#' || current === ' ') return;
   if (current === '.' || node.name === current) {
