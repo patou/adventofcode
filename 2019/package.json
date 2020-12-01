@@ -1,7 +1,7 @@
 {
-  "name": "firebase-web-101",
+  "name": "adventofcode_2019",
   "version": "1.0.0",
-  "description": "101 Firebase workshop for web apps.",
+  "description": "Advent of code 2019",
   "scripts": {
     "day2": "node day2.js",
     "day3": "node day3.js",
