@@ -1,0 +1,8 @@
+{
+  "name": "adventofcode_2020",
+  "version": "1.0.0",
+  "description": "Advent of code 2020",
+  "scripts": {
+    "day1": "node day1.js",
+  }
+}
