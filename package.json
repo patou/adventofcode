@@ -4,6 +4,7 @@
   "description": "Advent of code 2020",
   "scripts": {
     "day1": "node day1.js",
+    "day2": "node day2.js",
     "all": "node"
   }
 }
