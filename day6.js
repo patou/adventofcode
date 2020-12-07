@@ -2256,7 +2256,7 @@ hciwosm`
 ];
 
 const version = process.argv[2] || 0
-let tab = test[version].split("\n\n");
+let tab = test[version].split("\n\n").map(l => l.split('\n'));
 
 function log(...message) {
     version == 0 && console.log(...message);
@@ -2264,7 +2264,20 @@ function log(...message) {
 log(tab);
 
 function countQuestion(tab) {
-    return tab.map(l => [...new Set(l.split('\n').join('').split(''))]).reduce((total, group) => total + group.length, 0);
+    return tab.map(l => [...new Set(l.join('').split(''))]).reduce((total, group) => total + group.length, 0);
+}
+
+function interception(p, ...a) {
+return [p, ...a].reduce((p,c) => p.filter(e => c.includes(e)));
+}
+
+function getCommonQuestions(group) {
+    return interception([...new Set(group.join('').split(''))], ...group.map(g => g.split('')));
+}
+
+function countCommonQuestion(tab) {
+    return tab.map(getCommonQuestions).reduce((total, group) => total + group.length, 0);
 }
 
 console.log(`Result 1: ${countQuestion(tab)}`);
+console.log(`Result 2: ${countCommonQuestion(tab)}`);
