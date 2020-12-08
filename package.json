@@ -2,16 +2,18 @@
   "name": "adventofcode_2020",
   "version": "1.0.0",
   "description": "Advent of code 2020",
-  "type": "module",
   "scripts": {
-    "day1": "node --experimental-modules day1.js",
-    "day2": "node --experimental-modules day2.js",
-    "day3": "node --experimental-modules day3.js",
-    "day4": "node --experimental-modules day4.js",
-    "day5": "node --experimental-modules day5.js",
-    "day6": "node --experimental-modules day6.js",
-    "day7": "node --experimental-modules day7.js",
-    "day8": "node --experimental-modules day8.js",
+    "day1": "node -r esm day1.js",
+    "day2": "node -r esm day2.js",
+    "day3": "node -r esm day3.js",
+    "day4": "node -r esm day4.js",
+    "day5": "node -r esm day5.js",
+    "day6": "node -r esm day6.js",
+    "day7": "node -r esm day7.js",
+    "day8": "node -r esm day8.js",
     "all": "node"
+  },
+  "dependencies": {
+    "esm": "^3.2.25"
   }
 }
