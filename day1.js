@@ -206,16 +206,18 @@ let test = [
     1847
     1866`
 ];
-const version = process.argv[2] || 0
-let tab = test[version].split("\n").map(n => parseInt(n.trim()))
 
-console.log(tab);
+import {getTab, log} from './util.js';
+
+let tab = getTab(test).split("\n").map(n => parseInt(n.trim()))
+
+log(tab);
 
 function findTwoNumber(tab, year) {
     for (let i = 0; i < tab.length; i++) {
         let n = tab[i];
         if (tab.includes(year - n)) {
-            console.log(`nombre trouvés : ${n} ${year-n}`)
+            log(`nombre trouvés : ${n} ${year-n}`)
             return n * (year-n);
         }
     }
@@ -227,7 +229,7 @@ function findTreeNumber(tab) {
         let n = tab[i];
         let r = findTwoNumber(tab, 2020-n);
         if (r > 0) {
-            console.log(`nombres trouvés : ${n} ${r}`)
+            log(`nombres trouvés : ${n} ${r}`)
             return n * r;
         }
     }

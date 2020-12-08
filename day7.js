@@ -603,12 +603,8 @@ wavy yellow bags contain 5 vibrant fuchsia bags, 3 drab fuchsia bags.
 drab teal bags contain 2 mirrored green bags.
 bright red bags contain 1 pale beige bag.`];
 
-const version = process.argv[2] || 0
-let tab = test[version].split("\n");
-
-function log(...message) {
-    version == 0 && console.log(...message);
-}
+import {getTab, log} from './util.js';
+let tab = getTab(test).split("\n");
 
 function buildBag(value) {
     return value.split(', ').filter(item => item !== 'no other').map(item => item.match(/([0-9]+) (.*)/)).map(([_, number, name]) => ({

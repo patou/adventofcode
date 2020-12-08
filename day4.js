@@ -1062,15 +1062,15 @@ eyr:2021
 hcl:#602927 iyr:2014
 pid:274974402 hgt:183cm`
 ];
-const version = process.argv[2] || 0
-let tab = test[version].split("\n\n").map(n => n.split(/ |\n/).reduce((map, item) => {
+import {getTab, log} from './util.js';
+let tab = getTab(test).split("\n\n").map(n => n.split(/ |\n/).reduce((map, item) => {
     let key = item.substr(0,3);
     let value = item.substr(4);
     map[key] = value;
     return map
 }, {}));
 
-version == 0 && console.log(tab);
+log(tab);
 
 function check1(passport) {
     return Object.values(passport).length == 8 || (Object.values(passport).length == 7 && !passport['cid']);
@@ -1143,18 +1143,16 @@ function countValidPassport(tab, check) {
     return tab.filter(check);
 }
 console.log(`Result 1: ${countValidPassport(tab, check1).length}`);
-if (version < 2) {
-    console.log(countValidPassport(tab, check2));
-    console.log(`byr 2005: ${byr('2005')}`);
-    console.log(`byr 1986: ${byr('1986')}`);
-    console.log(`hgt 155cm: ${hgt('155cm')}`);
-    console.log(`hgt 64in: ${hgt('64in')}`);
-    console.log(`ecl grn: ${ecl('grn')}`);
-    console.log(`ecl tot: ${ecl('toto')}`);
-    console.log(`hcl #12sd2: ${hcl('#12sd2')}`);
-    console.log(`hcl #33ee55: ${hcl('#33ee55')}`);
-    console.log(`pid 000123: ${pid('000123')}`);
-    console.log(`pid 123456789: ${pid('123456789')}`);
-}
+log(countValidPassport(tab, check2));
+log(`byr 2005: ${byr('2005')}`);
+log(`byr 1986: ${byr('1986')}`);
+log(`hgt 155cm: ${hgt('155cm')}`);
+log(`hgt 64in: ${hgt('64in')}`);
+log(`ecl grn: ${ecl('grn')}`);
+log(`ecl tot: ${ecl('toto')}`);
+log(`hcl #12sd2: ${hcl('#12sd2')}`);
+log(`hcl #33ee55: ${hcl('#33ee55')}`);
+log(`pid 000123: ${pid('000123')}`);
+log(`pid 123456789: ${pid('123456789')}`);
 
 console.log(`Result 1: ${countValidPassport(tab, check2).length}`);

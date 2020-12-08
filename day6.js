@@ -2255,12 +2255,9 @@ mchio
 hciwosm`
 ];
 
-const version = process.argv[2] || 0
-let tab = test[version].split("\n\n").map(l => l.split('\n'));
+import {getTab, log} from './util.js';
+let tab = getTab(test).split("\n\n").map(l => l.split('\n'));
 
-function log(...message) {
-    version == 0 && console.log(...message);
-}
 log(tab);
 
 function countQuestion(tab) {

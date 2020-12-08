@@ -651,15 +651,12 @@ acc -4
 jmp +1`
 ];
 
-const version = process.argv[2] || 0
-let tab = test[version].split("\n").map(line => {
+import {getTab, log} from './util.js';
+
+let tab = getTab(test).split("\n").map(line => {
     let [op, value] = line.split(' ');
     return {op, arg: parseInt(value), step: -1}
 });
-
-function log(...message) {
-    version == 0 && console.log(...message);
-}
 
 log(tab);
 

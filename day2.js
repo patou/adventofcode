@@ -1003,10 +1003,10 @@ let test = [
 7-8 d: ddddwddddj
 8-9 w: wwwwwwwxww`
 ];
-const version = process.argv[2] || 0
-let tab = test[version].split("\n").map(n => n.split(':').map(i => i.trim())).map(item => ({policy: buildPolicy(item[0]), password: item[1], chars: countChar(item[1])}));
+import {getTab, log} from './util.js';
+let tab = getTab(test).split("\n").map(n => n.split(':').map(i => i.trim())).map(item => ({policy: buildPolicy(item[0]), password: item[1], chars: countChar(item[1])}));
 
-version == 0 && console.log(tab);
+log(tab);
 
 function countChar(str) {
     return str.split('').reduce((acc, c) => {
@@ -1034,12 +1034,12 @@ function checkPolicy2({policy, password}) {
 
 function calcPolicy1(tab) {
     let res = tab.filter(checkPolicy1);
-    version == 0 && console.log(res);
+    log(res);
     console.log('Result 1: ', res.length);
 }
 function calcPolicy2(tab) {
     let res = tab.filter(checkPolicy2);
-    version == 0 && console.log(res);
+    log(res);
     console.log('Result 2: ', res.length);
 }
 

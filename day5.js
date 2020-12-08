@@ -873,12 +873,9 @@ BFFBFBBLLL
 FBFBFFBRRR
 FFBBBBBRRR`
 ];
-const version = process.argv[2] || 0
-let tab = test[version].split("\n").map(l => l.split(''));
+import {getTab, log} from './util.js';
+let tab = getTab(test).split("\n").map(l => l.split(''));
 
-function log(...message) {
-    version == 0 && console.log(...message);
-}
 log(tab);
 
 /*
