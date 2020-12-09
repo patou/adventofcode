@@ -11,6 +11,7 @@
     "day6": "node -r esm day6.js",
     "day7": "node -r esm day7.js",
     "day8": "node -r esm day8.js",
+    "day9": "node -r esm day9.js",
     "all": "npm-run-all -l -c 'day*'",
     "all1": "npm-run-all -l -c 'day* -- 1'"
   },
