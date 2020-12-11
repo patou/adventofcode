@@ -12,8 +12,9 @@
     "day7": "node -r esm day7.js",
     "day8": "node -r esm day8.js",
     "day9": "node -r esm day9.js",
+    "day10": "node -r esm day10.js",
     "all": "npm-run-all -l -c 'day*'",
-    "all1": "npm-run-all -l -c 'day* -- 1'"
+    "all1": "npm-run-all -l -c 'day* -- last'"
   },
   "dependencies": {
     "esm": "^3.2.25"

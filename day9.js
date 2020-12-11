@@ -1050,5 +1050,32 @@ function checkTab(tab, preamble) {
     return 0;
 }
 
-console.log(`Result 1: ${checkTab(tab, tab.length < 25 ? 5 : 25)}`);
+function fundEncryptionWeakness(tab, value) {
+    let sum = 0;
+	let lower = 0;
+	let upper = 0;
+
+	while( sum !== value || upper === lower )
+	{
+		if( sum < value )
+		{
+			upper++;
+			sum += tab[ upper ];
+		}
+
+		if( sum > value )
+		{
+			lower++;
+			sum -= tab[ lower ];
+		}
+	}
+
+    const slice = tab.slice( lower + 1, upper + 1 );
+    log(slice);
+	return Math.min( ...slice ) + Math.max( ...slice );
+}
+
+const result1 = checkTab(tab, tab.length < 25 ? 5 : 25);
+console.log(`Result 1: ${result1}`);
+console.log(`Result 2: ${fundEncryptionWeakness(tab, result1)}`);
 
