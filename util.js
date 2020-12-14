@@ -1,4 +1,4 @@
-const version = process.argv[2] || 0
+export const version = process.argv[2] || 0
 
 export function getTab(test) {
     if (version == 'last') {
@@ -8,5 +8,5 @@ export function getTab(test) {
 }
 
 export function log(...message) {
-    version == 0 && console.log(...message);
+    version != 'last' && console.log(...message);
 }
