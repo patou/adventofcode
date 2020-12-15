@@ -826,4 +826,25 @@ function run(tab) {
     return Math.abs(x) + Math.abs(y);
 }
 
+function run2(tab) {
+    let x = 0, y = 0, d = 0, wx = 10, wy = -1;
+
+    for (let line of tab) {
+        switch(line.cmd) {
+            case 'F':  x += wx * line.val; y += wy * line.val; break;
+            case 'E': wx += line.val; break;
+            case 'W': wx -= line.val; break;
+            case 'N': wy -= line.val; break;
+            case 'S': wy += line.val; break;
+            case 'L': for( let angle = line.val; angle > 0; angle -= 90 ) [ wx, wy ] = [ wy, -wx ]; break;
+            case 'R': for( let angle = line.val; angle > 0; angle -= 90 ) [ wx, wy ] = [ -wy, wx ]; break;
+        }
+        if (d < 0) d = 360 + d;
+        if (d >= 360) d = d - 360;
+        console.log(`${line.cmd}${line.val} move ${x < 0 ? 'west':'east'} ${Math.abs(x)} ${y < 0 ? 'north':'sounth'} ${Math.abs(y)} direction ${d == 0 ? 'east' : d == 90 ? 'north': d == 180 ? 'west' : d == 270 ? 'south' : 'none'}(${d})`);
+    }
+    return Math.abs(x) + Math.abs(y);
+}
+
 console.log(`Result 1: ${run(tab)}`);
+console.log(`Result 2: ${run2(tab)}`);
