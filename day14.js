@@ -616,32 +616,11 @@ function startupProgram2(tab) {
             let addr = parseInt(element[0].replace('mem[', '').replace(']', '')).toString(2).padStart(36, '0');
             let value = BigInt( element[1] );
             log(`${mask} ${addr}`)
-            //shiftAddr(mask, addr, mem, value, 0n, 0);
-            //const paddedAddr = addr.toString( 2 ).padStart( 36, '0' );
-			let addrs = [ 0n ];
-
-			mask.split('').forEach( ( bit, index ) =>
-			{
-				addrs = addrs.map( v => v << 1n );
-
-				if( bit === 'X' )
-				{
-					addrs = addrs.concat( addrs.map( v => v | 1n ) );
-				}
-				else if( bit === '1' || addr[ index ] === '1' )
-				{
-					addrs = addrs.map( v => v | 1n );
-				}
-			} );
-
-			for( const addr of addrs )
-			{
-				mem[ addr ] = value;
-			}
+            shiftAddr(mask, addr, mem, value, 0n, 0);
         }
     });
     log(mem);
-    return mem.reduce((acc, n) => acc + n, BigInt(0));
+    return Object.values( mem ).reduce((acc, n) => acc + n, BigInt(0));
 }
 if (version != 'last')
     tab = load(test[1]);
