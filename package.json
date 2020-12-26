@@ -25,6 +25,7 @@
     "day20": "node -r esm day20.js",
     "day21": "node -r esm day21.js",
     "day22": "node -r esm day22.js",
+    "day23": "node -r esm day23.js",
 
     "all": "npm-run-all -l -c 'day*'",
     "all1": "npm-run-all -l -c 'day* -- last'"
