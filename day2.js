@@ -1007,9 +1007,9 @@ down 1
 forward 5`
 ];
 
-import {getTab, log} from './util.js';
+import {getTabLine, log} from './util.js';
 
-let tab = getTab(test).split('\n').map(l => l.split(' '))
+let tab = getTabLine(test).map(l => l.split(' '))
 
 log(tab);
 

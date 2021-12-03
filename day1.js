@@ -2011,9 +2011,9 @@ let test = [
     2341`
 ];
 
-import {getTab, log} from './util.js';
+import {getTabLine, log} from './util.js';
 
-let tab = getTab(test).split('\n').map(n => parseInt(n))
+let tab = getTabLine(test).map(n => parseInt(n))
 
 log(tab);
 

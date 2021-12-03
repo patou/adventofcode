@@ -7,6 +7,10 @@ export function getTab(test) {
     return test[version];
 }
 
+export function getTabLine(test) {
+    return getTab(test).split('\n').map(line => line.trim())
+}
+
 export function log(...message) {
     version != 'last' && console.log(...message);
 }
