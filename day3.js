@@ -1020,8 +1020,44 @@ let tab = getTabLine(test)
 log(tab);
 
 function compute(tab) {
-    return 0;
+    const size = tab.length / 2
+    const length = tab[0].length
+    const pos = new Array(length).fill(0)
+    for (const line of tab) {
+        for (let i = 0; i < length; i++) {
+            if (line[i] === '1') pos[i]++;
+        }
+    }
+    log(pos)
+    const gamma = pos.map(p => p > size ? 1 : 0).reduce((n, i) => n * 2 + i, 0)
+    const epsilon = pos.map(p => p > size ? 0 : 1).reduce((n, i) => n * 2 + i, 0)
+    log(gamma, epsilon)
+    return gamma * epsilon;
+}
+
+function calc(tabInit, rate) {
+    let tab = [...tabInit]
+    const length = tab[0].length  
+    for (let i = 0; i < length; i++) {
+        const size = tab.length / 2
+        let oxy = 0
+        for (const line of tab) {
+            if (line[i] === '1') oxy++;
+        }
+        const rating = rate(oxy, size)
+        tab = tab.filter(line => line[i] === rating)
+        if (tab.length === 1) break;
+    }
+    log(tab)
+    return parseInt(tab[0], 2)
+}
+
+function compute2(tab) {
+    const oxygen = calc(tab, (oxy, size) => oxy < size ? '0' : '1')
+    const scrubber = calc(tab, (oxy, size) => oxy < size ? '1' : '0')
+    log(oxygen, scrubber)
+    return oxygen * scrubber;
 }
 
 console.log('Résultat 1: ', compute(tab));
-
+console.log('Résultat 2: ', compute2(tab));
