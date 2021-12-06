@@ -11,6 +11,10 @@ export function getTabLine(test) {
     return getTab(test).split('\n').map(line => line.trim())
 }
 
+export function getTabList(test) {
+    return getTab(test).split(',').map(n => parseInt(n))
+}
+
 export function log(...message) {
     version != 'last' && console.log(...message);
 }
