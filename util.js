@@ -18,3 +18,9 @@ export function getTabList(test) {
 export function log(...message) {
     version != 'last' && console.log(...message);
 }
+
+ export function range(start, end) {
+    return start <= end
+      ? new Array(end - start + 1).fill(0).map((_, i) => i + start)
+      : new Array(start - end + 1).fill(0).map((_, i) => start - i)
+  }

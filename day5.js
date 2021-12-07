@@ -511,7 +511,7 @@ let test = [
     219,934 -> 441,934`
 ];
 
-import {getTab, getTabLine, log} from './util.js';
+import {getTab, getTabLine, log, range} from './util.js';
 
 let tab = getTabLine(test).map(line => line.split(' -> ')
     .map(pos => pos.split(',').map(n => parseInt(n)))
@@ -534,19 +534,21 @@ function compute(tab, part2 = false) {
     for (const line of tab) {
         if (line.start.x === line.end.x) {
             log(`horizontal ${line.start.x},${line.start.y} -> ${line.end.x},${line.end.y}`)
-            for (let y = Math.min(line.start.y,line.end.y); y <= Math.max(line.start.y,line.end.y); y++) {
+            for (let y of range(line.start.y,line.end.y)) {
                 check(line.start.x, y)
             }
         }
         else if (line.start.y === line.end.y) {
             log(`vertical ${line.start.x},${line.start.y} -> ${line.end.x},${line.end.y}`)
-            for (let x = Math.min(line.start.x,line.end.x); x <= Math.max(line.start.x,line.end.x); x++) {
+            for (let x of range(line.start.x,line.end.x)) {
                 check(x, line.start.y)
             }
         } else if (part2) {
             log(`diagonal ${line.start.x},${line.start.y} -> ${line.end.x},${line.end.y}`)
-            for (let x = Math.min(line.start.x,line.end.x), y = Math.min(line.start.y,line.end.y); x <= Math.max(line.start.x,line.end.x); x++, y++) {
-                check(x, y)
+            const rx = range(line.start.x,line.end.x)
+            const ry = range(line.start.y,line.end.y)
+            for (let i = 0; i < rx.length; i++) {
+                check(rx[i], ry[i])
             }
         }
     }
