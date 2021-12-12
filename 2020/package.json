@@ -1,0 +1,40 @@
+{
+  "name": "adventofcode_2021",
+  "version": "21.0.0",
+  "description": "Advent of code 2021",
+  "scripts": {
+    "day1": "node -r esm day1.js",
+    "day2": "node -r esm day2.js",
+    "day3": "node -r esm day3.js",
+    "day4": "node -r esm day4.js",
+    "day5": "node -r esm day5.js",
+    "day6": "node -r esm day6.js",
+    "day7": "node -r esm day7.js",
+    "day8": "node -r esm day8.js",
+    "day9": "node -r esm day9.js",
+    "day10": "node -r esm day10.js",
+    "day11": "node -r esm day11.js",
+    "day12": "node -r esm day12.js",
+    "day13": "node -r esm day13.js",
+    "day14": "node -r esm day14.js",
+    "day15": "node -r esm day15.js",
+    "day16": "node -r esm day16.js",
+    "day17": "node -r esm day17.js",
+    "day18": "node -r esm day18.js",
+    "day19": "node -r esm day19.js",
+    "day20": "node -r esm day20.js",
+    "day21": "node -r esm day21.js",
+    "day22": "node -r esm day22.js",
+    "day23": "node -r esm day23.js",
+    "day24": "node -r esm day24.js",
+    "day25": "node -r esm day25.js",
+    "all": "npm-run-all -l -c 'day*'",
+    "all1": "npm-run-all -l -c 'day* -- last'"
+  },
+  "dependencies": {
+    "esm": "^3.2.25"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
