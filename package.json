@@ -2,6 +2,7 @@
   "name": "adventofcode_2021",
   "version": "21.0.0",
   "description": "Advent of code 2021",
+  "license": "Apache-2.0",
   "scripts": {
     "day1": "node -r esm day1.js",
     "day2": "node -r esm day2.js",
