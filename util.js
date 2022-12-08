@@ -11,6 +11,10 @@ export function getTabLine(test) {
     return getTab(test).split('\n').map(line => line.trim())
 }
 
+export function getTabGrid(test) {
+    return getTab(test).split('\n').map(line => line.trim().split(''))
+}
+
 export function getTabList(test) {
     return getTab(test).split(',').map(n => parseInt(n))
 }
