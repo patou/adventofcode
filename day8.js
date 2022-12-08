@@ -149,14 +149,37 @@ function compute(tab) {
     return nb;
 }
 
-function compute2(tab) {
-    return 0;
+function countVisibility(tab, i, j, di, dj) {
+    const height = tab[i][j]
+    let p = 1;
+    let c = 0
+    while ((c = getCell(tab, i + p * di, j + p * dj)) !== -1) {
+        if (c >= height) return p
+        p++
+    }
+    return p - 1
 }
 
-log(checkVisibility(tab, 1, 1, -1, 0))
-log(checkVisibility(tab, 1, 1, 1, 0))
-log(checkVisibility(tab, 1, 1, 0, -1))
-log(checkVisibility(tab, 1, 1, 0, 1))
+function compute2(tab) {
+    const height = tab.length
+    const width = tab[0].length
+    let max = 0
+    for (let i = 1; i < height - 1; i++) {
+        for (let j = 1; j < width - 1; j++) {
+            const score = countVisibility(tab, i, j, -1, 0) *
+                countVisibility(tab, i, j, 1, 0) *
+                countVisibility(tab, i, j, 0, -1) *
+                countVisibility(tab, i, j, 0, 1);
+            max = Math.max(max, score)
+        }
+    }
+    return max;
+}
+
+log(countVisibility(tab, 3, 2, -1, 0))
+log(countVisibility(tab, 3, 2, 1, 0))
+log(countVisibility(tab, 3, 2, 0, -1))
+log(countVisibility(tab, 3, 2, 0, 1))
 
 console.log('Résultat 1: ', compute(tab))
 console.log('Résultat 2: ', compute2(tab))
